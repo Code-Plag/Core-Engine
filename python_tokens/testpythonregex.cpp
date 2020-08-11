@@ -16,7 +16,7 @@ using namespace std;
 
 int main()
 {
-    ifstream inFile("/home/yash/VS_CODE_PLAG/Parikshak-plagiarism/python_tokens/test.txt");
+    ifstream inFile("/home/yash/CODE_PLAG/Core-Engine/python_tokens/test.txt");
 
     string inFileCode((istreambuf_iterator<char>(inFile)), (istreambuf_iterator<char>()));
 
@@ -76,10 +76,13 @@ int main()
     Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex(";"), " ; ");
     Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex(","), " , ");
     Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex("\\."), " . ");
+    // cout << Normalized_Source_File_Code << endl;
 
+     // regex RegexExp("((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))"); 
+     //regex RegexExp("([-+]{1}[\\s]*)?((((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)))|((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]+((e|E)[0-9]*)*?))))(j|J))");
 
-    // regex RegexExp("((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))"); 
-    regex RegexExp("([-+]{1}[\\s]*)?((((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)))|((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]+((e|E)[0-9]*)*?))))(j|J))");
+    // regex RegexExp("( )random(( )\\.( ))randrange(( )\\(( )).*(( )\\))");
+    regex RegexExp("(( )def( ))([\\s]*?)(( )[A-Za-z_]+[0-9A-Za-z_]*( ))([\\s]*?)(\\([\\s\\S]*?\\))([\\s]*?):");
     auto word_Begin = sregex_iterator(Normalized_Source_File_Code.begin(), Normalized_Source_File_Code.end(), RegexExp);
     auto word_End = sregex_iterator();
     int w = 0;

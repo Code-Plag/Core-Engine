@@ -5,28 +5,30 @@ vector< pair<string, string > > RegexVectorPython
     /*NEWLINE*/
     { "(\\n)", "A" }, //NEWLINE
 
-
     /*COMMENT: GROUPCOMMENT & INLINECOMMENT*/
     { "(( )#( ).*)", "B" },   // (\\n[\\s]*?)((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\')) if needed for multiline
 
     /*HEADER*/
     { "((( )import( ))|(( )from( ).*?( )import( )))(.*)", "C" },   //HEADER 
 
+    /*BYTE BYTEARRAY*/
+    { "(( )bytes(( )\\(( )).*(( )\\)( )))|(( )bytearray(( )\\(( )).*(( )\\)( )))", "D" }, // Bytes BytesArray
+    { "(b|B|(br)|(Br)|(bR)|(BR))(((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n)))", "D" },  //TOTALQUOTE
+
     /*TOTALQUOTE*/ /*multiline totalquote*/
     { "((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))", "E" },  //TOTALQUOTE
 
-
     /*NUMBER*/
-
     { "([-+]{1}[\\s]*)?((((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)))|((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]+((e|E)[0-9]*)*?))))(j|J))", "F" },   //Complex number
-    { "([-+]{1}[\\s]*)?(( )0(b|B)[01]+( ))", "F" },         //Binary number
-    { "([-+]{1}[\\s]*)?(( )0(o|O)[0-7]+( ))", "F" },         //Octal number
-    { "([-+]{1}[\\s]*)?(( )0(x|X)[0-9a-fA-F]+( ))", "F" }, //HexaDecimal
-    { "([-+]{1}[\\s]*)?((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?)( ))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)( )))", "F" },
-    { "([-+]{1}[\\s]*)?((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?)( ))|(( )([0-9]+((e|E)[0-9]*)*?)( )))", "F" }, //Decimal
+    { "([-+]{1}[\\s]*)?(( )0(b|B)[01]+( ))", "F" },    //Binary number
+    { "([-+]{1}[\\s]*)?(( )0(o|O)[0-7]+( ))", "F" },   //Octal number
+    { "([-+]{1}[\\s]*)?(( )0(x|X)[0-9a-fA-F]+( ))", "F" },   //HexaDecimal
+    { "([-+]{1}[\\s]*)?((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?)( ))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)( )))", "F" }, //Decimal
+    { "([-+]{1}[\\s]*)?((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?)( ))|(( )([0-9]+((e|E)[0-9]*)*?)( )))", "F" }, //Integer
+    { "(( )True())|(()False( ))|(( )None( ))", "F" }, //Boolean
+    { "( )random(( )\\.( ))randrange(( )\\(( )).*(( )\\))", "F" }, //Range Random
 
-   /*OPERATOR*/
-
+    /*OPERATOR*/
     { "(/(  )/(  )=)|(\\*(  )\\*(  )=)|(>(  )>(  )=)|(<(  )<(  )=)|(\\+(  )=)|(-(  )=)|(\\*(  )=)|(/(  )=)|(%(  )=)|(&(  )=)|(\\|(  )=)|(\\^(  )=)|(\\+(  )\\+)|(-(  )-)", "I" }, //ASSIGN_OPERATOR_1
     { "(\\*(  )\\*)|(/(  )/)", "L" },  //ARITHMETIC_OPERATOR_2
     { "((!(  )=)|(( )is( )[\\s]*( )not( )))|((=(  )=)|( )is( ))|(>(  )=)|(<(  )=)", "K" }, // RELATIONAL_OPERATOR_1
@@ -34,29 +36,22 @@ vector< pair<string, string > > RegexVectorPython
     { "(>)|(<)", "K" }, // RELATIONAL_OPERATOR_2
     { "(=)", "I" },  //ASSIGN_OPERATOR_2
     { "(\\+)|(-)|(\\*)|(/)|(%)|(!)", "L" },  //ARITHMETIC_OPERATOR_2
-    { "(( )not( )[\\S]*( )in( ))|(( )in( ))", "D" }, //MEMBERSHIP_OPERATOR
+    { "(( )not( )[\\S]*( )in( ))|(( )in( ))", "" }, //MEMBERSHIP_OPERATOR
     { "(( )and( ))|(( )or( ))|(( )not( ))", "G" }, //LOGICAL_OPERATOR
-    { "(:)|(\\.)", "H" }, //OTHER_OPERATOR
+    { "(\\.)", "H" }, //OTHER_OPERATOR
 
+    /*EXCEPTION*/
+    { "(( )try( ):)", "" }, // Try
+    { "((( )except( )).*:)|((( )finally( )).*:)", "" },  // Exception
+    { "(( )raise( )).*", "" },  // Raise
 
-
-
-
-    /*APPLY*/
-    { "(std(\\s*)(:(  ):)(\\s*))?(( )(cin|cout|endl)( ))", "M" },
-
-
-    /*IF*/
-    { "( )(if|(if(\\s+)constexpr))( )", "N" },
-
-
-    /*DATATYPE*/
-    { "((( )(consteval|constexpr|constinit|const_cast|extern|long|mutable|register|short|signed|static|static_assert|static_cast|unsigned|const|volatile)( )(\\s*))*(( )(auto|bool|char|char8_t|char16_t|char32_t|double|float|int|wchar_t|void|size_t|struct|union|enum|typedef|string|vector|map|pair|template)( )))", "O" },
+    /*Function Def*/
+    { "(( )def( ))([\\s]*?)(( )[A-Za-z_]+[0-9A-Za-z_]*( ))([\\s]*?)(\\([\\s\\S]*?\\))([\\s]*?):", "" }, // function Definition
 
     /*SEPERATOR*/
-  //  { ";", "P"},  //SEMICOLON
+    { ";", "P" },  //SEMICOLON
     { ",", "Q" },  //COMMA
-
+    { ":", "" },  //COLON
 
     /*Braces*/
     { "\\{", "R" }, //L_CURLY_BRACE
@@ -74,156 +69,55 @@ vector< pair<string, string > > RegexVectorPython
 /*MAP OF ALL KEYWORDS*/
 unordered_map <string, string> KEYWORD_hash_Map_Python
 {
+    /*Input*/
+    { " input ", "" },
+    { " raw_input ", "" },
+    { " print ", "" },
+
+    /*If else*/
+    { " if ", "" },
+    { " elif ", "" },
+    { " else ", "" },
+
+    /*Break Continue*/
+    { " continue ", "" },
+    { " break ", "" },
+
+    /*Pass*/
+    { " pass ", "" },
+
+    /*Return*/
+    { " return ", "" },
+
+    /*Loop*/
+    { " for ", "" },
+    { " while ", "" },
+
+    /*Def*/
+    { " def ", "" },
+    { " lambda ", "" },
+
+    /*Class*/
+    { " class ", "" },
+
+    /*Del*/
+    { " del ", "" },
+
+    /*Self*/
+    { " self ", "" },
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*LOOP KEYWODS*/
-    { " for_each ", "Y" }, //LOOP
-    { " for ", "Y" },
-    { " while ", "Y" },
-    { " do ", "Y" },
-
-    /*NUMBERS*/
-    { " true ", "F" },
-    { " false ", "F" },
-    { " NULL ", "F" },
-    { " nullptr ", "F" },
-
-    /*DATATYPE KEYWORDS*/
-    { " long ", "O" },
-    { " short ", "O" },
-    { " signed ", "O" },
-    { " unsigned ", "O" },
-
-    /*APPLY KEYWORDS*/
-    { " cout ", "M" },
-    { " cin ", "M" },
-    { " endl ", "M" },
-    { " getline ", "M" },
-    { " printf ", "M" },
-    { " scanf ", "M" },
-
-    /*OPERATOR KEYWORDS*/
-    { " sizeof ", "H" },  //OTHER_OPERATOR
-    { " and ", "K" },  //RELATIONAL_OPERATOR
-    { " and_eq ", "I" }, //ASSIGN_OPERATOR
-    { " bitand ", "J" }, //BITWISE_OPERATOR
-    { " bitor ", "J" },  //BITWISE_OPERATOR
-    { " compl ", "J" },  //BITWISE_OPERATOR
-    { " not ", "K" },  //RELATIONAL_OPERATOR
-    { " not_eq ", "I" }, //ASSIGN_OPERATOR
-    { " xor ", "K" },  //RELATIONAL_OPERATOR
-    { " xor_eq ", "I" },  //ASSIGN_OPERATOR
-
-    /*KEYWORDS USED FOR TOKENIZATION*/
-    { " switch ", "Z" },
-    { " else ", "a" },
-    { " break ", "b" },
-    { " continue ", "c" },
-    { " return ", "d" },
-    { " goto ", "e" },
-    { " catch ", "f" },
-    { " throw ", "g" },
-    { " synchronized ", "h" },
-    { " class ", "i" },
-    { " typedef ", "j" },
-
-    /*OTHER KEYWORDS*/
-    { " alignas ", "k" },
-    { " alignof ", "k" },
-    { " atomic_cancel ", "k" },
-    { " atomic_commit ", "k" },
-    { " atomic_noexcept ", "k" },
-    { " asm ", "k" },
-
-    { " concept ", "k" },
-    { " const ", "k" },
-    { " consteval ", "k" },
-    { " constexpr ", "k" },
-    { " constinit ", "k" },
-    { " const_cast ", "k" },
-    { " co_await ", "k" },
-    { " co_return ", "k" },
-    { " co_yield ", "k" },
-
-    { " decltype ", "k" },
-    { " delete ", "k" },
-    { " dynamic_cast ", "k" },
-    { " define ", "k" },
-    { " defined ", "k" },
-
-    { " enum ", "k" },
-    { " explicit ", "k" },
-    { " export ", "k" },
-    { " extern ", "k" },
-    { " endif ", "k" },
-    { " elif ", "k" },
-    { " error ", "k" },
-
-    { " friend ", "k" },
-    { " fortran ", "k" },
-
-    { " inline ", "k" },
-    { " ifdef ", "k" },
-    { " ifndef ", "k" },
-
-    { " line ", "k" },
-
-    { " mutable ", "k" },
-
-    { " namespace ", "k" },
-    { " new ", "k" },
-    { " noexcept ", "k" },
-
-    { " operator ", "k" },
-    { " or ", "k" },
-    { " or_eq ", "k" },
-
-    { " private ", "k" },
-    { " protected ", "k" },
-    { " public ", "k" },
-    { " pragma ", "k" },
-    { " _Pragma ", "k" },
-
-    { " reflexpr ", "k" },
-    { " register ", "k" },
-    { " reinterpret_cast ", "k" },
-    { " requires ", "k" },
-    { " restrict ", "k" },
-
-    { " static ", "k" },
-    { " static_assert ", "k" },
-    { " static_cast ", "k" },
-    { " std ", "k" },
-
-    { " this ", "k" },
-    { " thread_local ", "k" },
-
-    { " typeid ", "k" },
-    { " typename ", "k" },
-
-    { " undef ", "k" },
-    { " using ", "k" },
-
-    { " virtual ", "k" },
-    { " volatile ", "k" },
-
-    { " __has_include ", "k" },
-    { " __has_cpp_attribute ", "k" },
+    /*Other Keywords*/
+    { " as ", "k" },
+    { " async ", "k" },
+    { " assert ", "k" },
+    { " await ", "k" },
+    { " from ", "k" },
+    { " global ", "k" },
+    { " is ", "k" },
+    { " nonlocal ", "k" },
+    { " with ", "k" },
+    { " yield ", "k" },
 
 };
 

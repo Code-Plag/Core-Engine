@@ -1,51 +1,18 @@
-print
+
 typecast token - int(dfsdgs) float(), complex() str()  bool() -type cast
+super()  // inheritance function
+
+Memory View
+"(memoryview(( )\\(( )).*(( )\\)( )))|()"
+
 len() -length token
 Remember escape sequence for python
 
 make tokens for common functions
 refer - w3 string list tuples dictionary, set, array etc
 
-COMMENT
-
-singleline
-#-start     \n - break
-
-multinine
-
-"""
-masala
-
-"""
-
 \\\\\Variable
 same regex as identifier
-
-global <varname>   //imp ignore grobal word
-
-
-\\\\\Number
-True
-False
-b" .+? "    //byte type    write this before double quote regex
-bytearray(.+?)     //bytearray
-random.randrange(1, 10)   // output is number make a number token
-
-int
-x = 35e3
-y = 12E4
-float
-z = -87.7e100
--35.59
-
-complex
-x = 3+5j
-y = 5j
-z = -5j
-
-octal
-hex
-
 
 
 \\[[\\s\\S]*?\\]  = list value
@@ -55,104 +22,4 @@ keyword list
 type(<varname>)  // returns datatype of variable
 range
 frozenset
-
-
-
-OPERATORS
-
-
-(//=)|(**=)|(>>=)|(<<=)|(+=)|(-=)|(*=)|(/=)|(%=)|(&=)|(|=)|(^=)    I     //assignment operator
-(**)|(//)    //Arithmetic Operator 1	
-((==)|is)|((!=)|(is not))|(>=)|(<=)   // relational operator 1
-(<<)|(>>)|(&|AND)|(||OR)|(^|XOR)|(~|NOT)     //BITWISE OPERATOR
-(>)|(<)   //relational OPERATOR 2
-(=)   // assignment aperator 2
-(+)|(-)|(*)|(/)|(%) //Arithmetic Operator 2
-(not in)|(in)  // Membership operator
-(and)|(or)|(not) // LOGICAL OPERATOR
-(:)|(.)
-
-Arithmetic operators
-Assignment operators
-Comparison operators		
-Logical operators	
-Membership operators
-Bitwise operators
-Other operators
 	
-
-
-
-
-if|elif|else
-
-pass = continue = break
-
-for|while  // for keyword see about range function
-
-def -function dinination
-return - make token
-pass - keyword used in loops and if else also check
-
-
-def + identifier + brackets + colon
-
-lambda
-1. identifier + = + lambda + anything + colon 
-or
-2. lambda + anything + colon  
-
-
-
-CLASS and OBJECTS
-
-class + identifier + anything +colon
-make seperate token of constructor
-
-def + __init__ + (anything) + :
-
-del keyword make seperate token
-super()   if necessary
-
-
-ITERATOR and NEXT
- def __iter__(self):
-    self.a = 1
-    return self
-
-  def __next__(self):
-    x = self.a
-    self.a += 1
-    return x
-
-
-IMPORT / header files
-
-from mymodule import person1
-import mymodule as m
-import mymodule
-
-
-EXCEPTION
-try + :
-
-except + anything + : 
-OR
-finally + anything + : 
-OR
-raise Exception|anything  
-
-
-
-INPUT like apply token
-
-input
-raw_input
-print
-
-
-
-
-
-
-
