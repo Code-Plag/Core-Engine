@@ -13,10 +13,10 @@ vector< pair<string, string > > RegexVectorPython
 
     /*BYTE BYTEARRAY*/
     { "(( )bytes(( )\\(( )).*(( )\\)( )))|(( )bytearray(( )\\(( )).*(( )\\)( )))", "D" }, // Bytes BytesArray
-    { "(b|B|(br)|(Br)|(bR)|(BR))(((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n)))", "D" },  //TOTALQUOTE
+    { "(([bB])|([bB][rR])|([rR][bB]))(((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n)))", "D" },  //TOTALQUOTE
 
     /*TOTALQUOTE*/ /*multiline totalquote*/
-    { "((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))", "E" },  //TOTALQUOTE
+    { "([rR]|[uU]|[fF]|([fF][rR])|([rR][fF]))?((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))", "E" },  //TOTALQUOTE
 
     /*NUMBER*/
     { "([-+]{1}[\\s]*)?((((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)))|((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]+((e|E)[0-9]*)*?))))(j|J))", "F" },   //Complex number
@@ -25,122 +25,131 @@ vector< pair<string, string > > RegexVectorPython
     { "([-+]{1}[\\s]*)?(( )0(x|X)[0-9a-fA-F]+( ))", "F" },   //HexaDecimal
     { "([-+]{1}[\\s]*)?((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?)( ))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)( )))", "F" }, //Decimal
     { "([-+]{1}[\\s]*)?((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?)( ))|(( )([0-9]+((e|E)[0-9]*)*?)( )))", "F" }, //Integer
-    { "(( )True())|(()False( ))|(( )None( ))", "F" }, //Boolean
     { "( )random(( )\\.( ))randrange(( )\\(( )).*(( )\\))", "F" }, //Range Random
 
     /*OPERATOR*/
-    { "(/(  )/(  )=)|(\\*(  )\\*(  )=)|(>(  )>(  )=)|(<(  )<(  )=)|(\\+(  )=)|(-(  )=)|(\\*(  )=)|(/(  )=)|(%(  )=)|(&(  )=)|(\\|(  )=)|(\\^(  )=)|(\\+(  )\\+)|(-(  )-)|(@(  )=)", "I" }, //ASSIGN_OPERATOR_1
-    { "(\\*(  )\\*)|(/(  )/)", "L" },  //ARITHMETIC_OPERATOR_1
-    { "((<(  )>)|(!(  )=)|(( )is( )[\\s]*( )not( )))|((=(  )=)|( )is( ))|(>(  )=)|(<(  )=)", "K" }, // RELATIONAL_OPERATOR_1
+    { "(/(  )/(  )=)|(\\*(  )\\*(  )=)|(>(  )>(  )=)|(<(  )<(  )=)|(\\+(  )=)|(-(  )=)|(\\*(  )=)|(/(  )=)|(%(  )=)|(&(  )=)|(\\|(  )=)|(\\^(  )=)|(\\+(  )\\+)|(-(  )-)|(@(  )=)", "G" }, //ASSIGN_OPERATOR_1
+    { "(\\*(  )\\*)|(/(  )/)", "H" },  //ARITHMETIC_OPERATOR_1
+    { "((<(  )>)|(!(  )=)|(( )is( )[\\s]*( )not( )))|((=(  )=)|( )is( ))|(>(  )=)|(<(  )=)", "I" }, // RELATIONAL_OPERATOR_1
     { "(<(  )<)|(>(  )>)|(&|( )AND( ))|(\\||( )OR( ))|(\\^|( )XOR( ))|(~|( )NOT( ))", "J" }, //BITWISE_OPERATOR
-    { "-(  )>", "H" }, //OTHER_OPERATOR_1
-    { "(>)|(<)", "K" }, // RELATIONAL_OPERATOR_2
-    { "(=)", "I" },  //ASSIGN_OPERATOR_2
-    { "(\\+)|(-)|(\\*)|(/)|(%)|(!)", "L" },  //ARITHMETIC_OPERATOR_2
-    { "(( )not( )[\\S]*( )in( ))|(( )in( ))", "" }, //MEMBERSHIP_OPERATOR
-    { "(( )and( ))|(( )or( ))|(( )not( ))", "G" }, //LOGICAL_OPERATOR
-    { "(\\.\\.\\.)|(\\.)|(@)", "H" }, //OTHER_OPERATOR_2
+    { "-(  )>", "K" }, //OTHER_OPERATOR_1
+    { "(>)|(<)", "I" }, // RELATIONAL_OPERATOR_2
+    { "(=)", "G" },  //ASSIGN_OPERATOR_2
+    { "(\\+)|(-)|(\\*)|(/)|(%)|(!)", "H" },  //ARITHMETIC_OPERATOR_2
+    { "(( )not( )[\\S]*( )in( ))|(( )in( ))", "L" }, //MEMBERSHIP_OPERATOR
+    // "M" Used for Logical Operators in Map
+    { "(\\.\\.\\.)|(\\.)|(@)", "K" }, //OTHER_OPERATOR_2
 
     /*EXCEPTION*/
-    { "(( )try( ):)", "" }, // Try
-    { "((( )except( )).*:)|((( )finally( )).*:)", "" },  // Exception
-    { "(( )raise( )).*", "" },  // Raise
+    { "(( )try( ):)", "N" }, // Try
+    { "((( )except( )).*:)|((( )finally( )).*:)", "O" },  // Exception
+    { "(( )raise( )).*", "P" },  // Raise
 
     /*Function Def*/
-    { "(( )def( ))([\\s]*?)(( )[A-Za-z_]+[0-9A-Za-z_]*( ))([\\s]*?)(\\([\\s\\S]*?\\))([\\s]*?):", "" }, // function Definition
+    { "(( )def( ))([\\s]*?)(( )[A-Za-z_]+[0-9A-Za-z_]*( ))([\\s]*?)(\\([\\s\\S]*?\\))([\\s]*?):", "Q" }, // function Definition
 
     /*SEPERATOR*/
-    { ";", "P" },  //SEMICOLON
-    { ",", "Q" },  //COMMA
-    { ":", "" },  //COLON
+    { ";", "R" },  //SEMICOLON
+    { ",", "S" },  //COMMA
+    { ":", "T" },  //COLON
 
     /*Braces*/
-    { "\\{", "R" }, //L_CURLY_BRACE
-    { "\\}", "S" }, //R_CURLY_BRACE
-    { "\\[", "T" }, //L_SQUARE_BRACKET
-    { "\\]", "U" }, //R_SQUARE_BRACKET
-    { "\\(", "V" }, //L_PARENTHESIS
-    { "\\)", "W" }, //R_PARENTHESIS
+    { "\\{", "U" }, //L_CURLY_BRACE
+    { "\\}", "V" }, //R_CURLY_BRACE
+    { "\\[", "U" }, //L_SQUARE_BRACKET
+    { "\\]", "V" }, //R_SQUARE_BRACKET
+    { "\\(", "U" }, //L_PARENTHESIS
+    { "\\)", "V" }, //R_PARENTHESIS
 
     /*IDENTIFIER*/
-    { "(( )[A-Za-z_]+[0-9A-Za-z_]*( ))", "X" }  //ID
+    { "(( )[A-Za-z_]+[0-9A-Za-z_]*( ))", "W" }  //ID
 
 };
 
 /*MAP OF ALL KEYWORDS*/
 unordered_map <string, string> KEYWORD_hash_Map_Python
 {
+
+    /*Operators*/
+    { " and ", "M" }, //LOGICAL_OPERATOR
+    { " or ", "M" }, //LOGICAL_OPERATOR
+    { " not ", "M" }, //LOGICAL_OPERATOR
+
+    /*Number*/
+    { " True ", "F" }, //Boolean
+    { " False ", "F" }, //Boolean
+    { " None ", "F" }, //Boolean
+
     /*Input*/
-    { " input ", "" },
-    { " raw_input ", "" },
-    { " print ", "" },
+    { " input ", "a" },
+    { " raw_input ", "a" },
+    { " print ", "a" },
 
     /*If else*/
-    { " if ", "" },
-    { " elif ", "" },
-    { " else ", "" },
+    { " if ", "b" },
+    { " elif ", "b" },
+    { " else ", "b" },
 
     /*Break Continue*/
-    { " continue ", "" },
-    { " break ", "" },
+    { " continue ", "c" },
+    { " break ", "c" },
 
     /*Pass*/
-    { " pass ", "" },
+    { " pass ", "d" },
 
     /*Return*/
-    { " return ", "" },
+    { " return ", "e" },
 
     /*Loop*/
-    { " for ", "" },
-    { " while ", "" },
+    { " for ", "f" },
+    { " while ", "f" },
 
     /*Def*/
-    { " def ", "" },
-    { " lambda ", "" },
+    { " def ", "g" },
+    { " lambda ", "g" },
 
     /*Class*/
-    { " class ", "" },
+    { " class ", "h" },
 
     /*Del*/
-    { " del ", "" },
+    { " del ", "i" },
 
     /*Self*/
-    { " self ", "" },
+    { " self ", "j" },
 
     /*MemoryView*/
-    { " memoryview ", "" },
+    { " memoryview ", "k" },
 
     /*Typecast*/
-    { " bool ", "" },
-    { " str ", "" },
-    { " int ", "" },
-    { " float ", "" },
-    { " complex ", "" },
+    { " bool ", "l" },
+    { " str ", "l" },
+    { " int ", "l" },
+    { " float ", "l" },
+    { " complex ", "l" },
 
     /*sequence*/
-    { " set ", "" },
-    { " frozenset ", "" },
-    { " dict ", "" },
-    { " list ", "" },
-    { " tuple ", "" },
-    { " range ", "" },
+    { " set ", "m" },
+    { " frozenset ", "m" },
+    { " dict ", "m" },
+    { " list ", "m" },
+    { " tuple ", "m" },
+    { " range ", "m" },
 
     /*Type*/
-    { " type ", "" },
+    { " type ", "n" },
 
     /*Other Keywords*/
-    { " as ", "k" },
-    { " async ", "k" },
-    { " assert ", "k" },
-    { " await ", "k" },
-    { " from ", "k" },
-    { " global ", "k" },
-    { " is ", "k" },
-    { " nonlocal ", "k" },
-    { " super ", "k" },
-    { " with ", "k" },
-    { " yield ", "k" },
+    { " as ", "o" },
+    { " async ", "o" },
+    { " assert ", "o" },
+    { " await ", "o" },
+    { " from ", "o" },
+    { " global ", "o" },
+    { " is ", "o" },
+    { " map ", "o" },
+    { " nonlocal ", "o" },
+    { " super ", "o" },
+    { " with ", "o" },
+    { " yield ", "o" },
 
 };
-
-
