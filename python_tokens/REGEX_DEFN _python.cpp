@@ -29,16 +29,17 @@ vector< pair<string, string > > RegexVectorPython
     { "( )random(( )\\.( ))randrange(( )\\(( )).*(( )\\))", "F" }, //Range Random
 
     /*OPERATOR*/
-    { "(/(  )/(  )=)|(\\*(  )\\*(  )=)|(>(  )>(  )=)|(<(  )<(  )=)|(\\+(  )=)|(-(  )=)|(\\*(  )=)|(/(  )=)|(%(  )=)|(&(  )=)|(\\|(  )=)|(\\^(  )=)|(\\+(  )\\+)|(-(  )-)", "I" }, //ASSIGN_OPERATOR_1
-    { "(\\*(  )\\*)|(/(  )/)", "L" },  //ARITHMETIC_OPERATOR_2
-    { "((!(  )=)|(( )is( )[\\s]*( )not( )))|((=(  )=)|( )is( ))|(>(  )=)|(<(  )=)", "K" }, // RELATIONAL_OPERATOR_1
+    { "(/(  )/(  )=)|(\\*(  )\\*(  )=)|(>(  )>(  )=)|(<(  )<(  )=)|(\\+(  )=)|(-(  )=)|(\\*(  )=)|(/(  )=)|(%(  )=)|(&(  )=)|(\\|(  )=)|(\\^(  )=)|(\\+(  )\\+)|(-(  )-)|(@(  )=)", "I" }, //ASSIGN_OPERATOR_1
+    { "(\\*(  )\\*)|(/(  )/)", "L" },  //ARITHMETIC_OPERATOR_1
+    { "((<(  )>)|(!(  )=)|(( )is( )[\\s]*( )not( )))|((=(  )=)|( )is( ))|(>(  )=)|(<(  )=)", "K" }, // RELATIONAL_OPERATOR_1
     { "(<(  )<)|(>(  )>)|(&|( )AND( ))|(\\||( )OR( ))|(\\^|( )XOR( ))|(~|( )NOT( ))", "J" }, //BITWISE_OPERATOR
+    { "-(  )>", "H" }, //OTHER_OPERATOR_1
     { "(>)|(<)", "K" }, // RELATIONAL_OPERATOR_2
     { "(=)", "I" },  //ASSIGN_OPERATOR_2
     { "(\\+)|(-)|(\\*)|(/)|(%)|(!)", "L" },  //ARITHMETIC_OPERATOR_2
     { "(( )not( )[\\S]*( )in( ))|(( )in( ))", "" }, //MEMBERSHIP_OPERATOR
     { "(( )and( ))|(( )or( ))|(( )not( ))", "G" }, //LOGICAL_OPERATOR
-    { "(\\.)", "H" }, //OTHER_OPERATOR
+    { "(\\.\\.\\.)|(\\.)|(@)", "H" }, //OTHER_OPERATOR_2
 
     /*EXCEPTION*/
     { "(( )try( ):)", "" }, // Try
