@@ -106,6 +106,26 @@ unordered_map <string, string> KEYWORD_hash_Map_Python
     /*Self*/
     { " self ", "" },
 
+    /*MemoryView*/
+    { " memoryview ", "" },
+
+    /*Typecast*/
+    { " bool ", "" },
+    { " str ", "" },
+    { " int ", "" },
+    { " float ", "" },
+    { " complex ", "" },
+
+    /*sequence*/
+    { " set ", "" },
+    { " frozenset ", "" },
+    { " dict ", "" },
+    { " list ", "" },
+    { " tuple ", "" },
+    { " range ", "" },
+
+    /*Type*/
+    { " type ", "" },
 
     /*Other Keywords*/
     { " as ", "k" },
@@ -116,6 +136,7 @@ unordered_map <string, string> KEYWORD_hash_Map_Python
     { " global ", "k" },
     { " is ", "k" },
     { " nonlocal ", "k" },
+    { " super ", "k" },
     { " with ", "k" },
     { " yield ", "k" },
 
