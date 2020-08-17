@@ -1,17 +1,18 @@
+
 #include <iostream>
 #include <regex>
 #include <unordered_set>
-#include<set>
-#include<cmath>
-#include<map>
-#include<bits/stdc++.h>
+#include <set>
+#include <cmath>
+#include <map>
+#include <bits/stdc++.h>
 #include <fstream>
 #include <unordered_map>
 #include <vector>
 #include <dirent.h>
 #include <iterator>
 #include <string>
-#include <cmath> 
+#include <cmath>
 using namespace std;
 
 int main()
@@ -21,8 +22,6 @@ int main()
     string inFileCode((istreambuf_iterator<char>(inFile)), (istreambuf_iterator<char>()));
 
     string Normalized_Source_File_Code = inFileCode;
-
-
 
     /*SINGLE SPACE NEEDED AT START*/
     Normalized_Source_File_Code = " " + Normalized_Source_File_Code + " ";
@@ -75,8 +74,8 @@ int main()
     Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex("\\."), " . ");
     // cout << Normalized_Source_File_Code << endl;
 
-     // regex RegexExp("((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))"); 
-     //regex RegexExp("([-+]{1}[\\s]*)?((((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)))|((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]+((e|E)[0-9]*)*?))))(j|J))");
+    // regex RegexExp("((\"\"\"[\\s\\S]*?\"\"\")|(\'\'\'[\\s\\S]*?\'\'\'))|(\"[^\"^\\n]*(\"|\\n))|(\'[^\'^\\n]*(\'|\\n))");
+    //regex RegexExp("([-+]{1}[\\s]*)?((((( )([0-9]*(( )\\.( ))[0-9]*((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]*(( )\\.( ))[0-9]*((e|E)[0-9]*)*?)))|((( )([0-9]+((e|E)(( )(-|\\+)( ))[0-9]*)*?))|(( )([0-9]+((e|E)[0-9]*)*?))))(j|J))");
 
     // regex RegexExp("( )random(( )\\.( ))randrange(( )\\(( )).*(( )\\))");
     regex RegexExp("(( )def( ))([\\s]*?)(( )[A-Za-z_]+[0-9A-Za-z_]*( ))([\\s]*?)(\\([\\s\\S]*?\\))([\\s]*?):");
@@ -86,9 +85,8 @@ int main()
     for (auto token_iterator = word_Begin; token_iterator != word_End; token_iterator++)
     {
         w++;
-        cout << token_iterator->str() <<"\ncountr: "<< w  <<"\n****************\n";
+        cout << token_iterator->str() << "\ncountr: " << w << "\n****************\n";
     }
-
 
     return 0;
 }

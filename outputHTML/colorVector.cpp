@@ -1,7 +1,5 @@
 
-
-vector <string> Color
-{
+vector<string> Color{
 
     "Red ",
     "Green",
@@ -45,9 +43,4 @@ vector <string> Color
     "LightSkyBlue ",
     "LightPink ",
     "DarkTurquoise",
-
-    
-
-
-
 };

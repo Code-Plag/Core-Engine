@@ -1,3 +1,4 @@
+
 /*CLASS TO STORE DATA OF INDIVITUAL FILE*/
 
 /*ZERO PARAMETER CONSTRUCTOR*/
@@ -20,10 +21,8 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
     this->Normalized_Source_File_Code = inFileCode;
     this->Original_Source_File_Code = inFileCode;
 
-
     /*SINGLE SPACE NEEDED AT START*/
     Normalized_Source_File_Code = " " + Normalized_Source_File_Code + " ";
-
 
     /*NORMALIZATION OF CODE*/
     try
@@ -42,10 +41,6 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex(":>|\\?\\?\\)"), "]");
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex("%:|\\?\\?="), "#");
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex("\\?\\?/"), "\\");
-
-
-
-
 
         //normalization of code
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex("( )+"), "     ");
@@ -79,20 +74,17 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex(";"), " ; ");
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex(","), " , ");
         Normalized_Source_File_Code = regex_replace(Normalized_Source_File_Code, regex("\\."), " . ");
-
-
     }
     catch (...)
     {
         return false;
     }
 
-
     /*START OF TOKENIZATION PROGRAM*/
-    map <unsigned int, TOKEN> Tokenized_File; // TOKENIZED FILE MAP TO SAVE ALL DATA OF GENERATED TOKENS
-    unordered_set<unsigned int> visited; //VISITED SET TO TRACK POSITIONS VISITED IN THE STRING
-    vector< pair<string, string> > RegexVector;
-    unordered_map <string, string> KEYWORD_hash_Map;
+    map<unsigned int, TOKEN> Tokenized_File; // TOKENIZED FILE MAP TO SAVE ALL DATA OF GENERATED TOKENS
+    unordered_set<unsigned int> visited;     //VISITED SET TO TRACK POSITIONS VISITED IN THE STRING
+    vector<pair<string, string>> RegexVector;
+    unordered_map<string, string> KEYWORD_hash_Map;
 
     /*CHECK LANGUAGE */
     if (Source_File_Language == "c/c++")
@@ -102,17 +94,20 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
     }
     else if (Source_File_Language == "java")
     {
-        return  true;//temp
+        RegexVector = RegexVectorJava;
+        KEYWORD_hash_Map = KEYWORD_hash_Map_Java;
     }
     else if (Source_File_Language == "python")
     {
-        return true;//temp
+        RegexVector = RegexVectorPython;
+        KEYWORD_hash_Map = KEYWORD_hash_Map_Python;
     }
 
     /*ITERATION OVER EACH REGEX IN RegexVector START*/
     for (auto Token_Type_Iterator = RegexVector.begin(); Token_Type_Iterator != RegexVector.end(); Token_Type_Iterator++)
     {
-        try {
+        try
+        {
             regex RegexExp(Token_Type_Iterator->first); //REGEX EXPRESSION CREATED
 
             /*ITERATOR INITIALIZATION ON STRING OF CODE I.E. ON Normalized_Source_File_Code*/
@@ -124,7 +119,7 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
             {
                 try
                 {
-                    auto token_start_position = token_iterator->position(); //SAVES FIRST POSITION OF THE MATCHED SUBSTRING
+                    auto token_start_position = token_iterator->position();                            //SAVES FIRST POSITION OF THE MATCHED SUBSTRING
                     auto token_end_position = (token_iterator->str().length()) + token_start_position; //SAVES END POSITION OF MATCHED SUBSTRING
 
                     /*CHECK IF TOKEN IS ALREADY FORMED START*/
@@ -150,24 +145,25 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
                             visited.insert(visited_iterator);
 
                         /*INSERT TOKEN IN THE MAP*/
-                        Tokenized_File.insert({ token_start_position, actualToken });
-                    }  //CHECK IF TOKEN IS ALREADY FORMED END
+                        Tokenized_File.insert({token_start_position, actualToken});
+                    } //CHECK IF TOKEN IS ALREADY FORMED END
                 }
                 catch (...)
                 {
                     continue;
                 }
-            }  //ITERATIONS OVER THE CODE STRING EnD
+            } //ITERATIONS OVER THE CODE STRING EnD
         }
-        catch (...) {
+        catch (...)
+        {
             continue;
         }
-    }  //ITERATION OVER EACH REGEX IN RegexVector END
+    } //ITERATION OVER EACH REGEX IN RegexVector END
 
     /*CODE TO COUNT NEWLINES AND ENTER START AND END NEWLINE FOR TOKENS*/
 
     //  vector<unsigned long int> newlineIndex; // TEMPORARY VECTOR TO STORE INDEX OF  ALL NEWLINES
-    unsigned  int lineCounter = 1; // COUNTER TO TRACK LINE NUMBER
+    unsigned int lineCounter = 1; // COUNTER TO TRACK LINE NUMBER
 
     /*ITERATOR OVER TO TOKENIZED MAP START*/
     for (auto tokenizedFileIterator = Tokenized_File.begin(), previousPos = Tokenized_File.begin(); tokenizedFileIterator != Tokenized_File.end(); tokenizedFileIterator++)
@@ -176,9 +172,9 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
         if (tokenizedFileIterator->second.getToken_Type() == "A")
         {
             //newlineIndex.push_back(tokenizedFileIterator->first); //NEWLINE INDICES STORED IN VECTOR FOR EARISING
-            lineCounter++; //COUNTER INCREMENT
+            lineCounter++;                                                     //COUNTER INCREMENT
             tokenizedFileIterator->second.setToken_Start_Line_no(lineCounter); //START LINE NUMBER SET
-            tokenizedFileIterator->second.setToken_End_Line_no(lineCounter); //END LINE NUMBER SET
+            tokenizedFileIterator->second.setToken_End_Line_no(lineCounter);   //END LINE NUMBER SET
 
             /*CODE TO CHECK IF LINE ALREADY PRESENT IN A TOKEN OR NOT BASED ON START POSITION*/
             if ((previousPos->second.getToken_End_Pos() > tokenizedFileIterator->second.getToken_Start_Pos()) && (previousPos->second.getToken_End_Line_no() != (lineCounter)))
@@ -187,7 +183,7 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
         else
         {
             tokenizedFileIterator->second.setToken_Start_Line_no(lineCounter); //START LINE NUMBER SET
-            tokenizedFileIterator->second.setToken_End_Line_no(lineCounter); //END LINE NUMBER SET
+            tokenizedFileIterator->second.setToken_End_Line_no(lineCounter);   //END LINE NUMBER SET
             previousPos = tokenizedFileIterator;
         }
     } //ITERATOR OVER TO TOKENIZED MAP END
@@ -199,8 +195,7 @@ bool TOKENIZER::TOKENIZE_FILE(string Source_File_Language, string Source_File_Pa
     for (auto Tokenized_File_Iterator = Tokenized_File.begin(); Tokenized_File_Iterator != Tokenized_File.end(); Tokenized_File_Iterator++)
     {
 
-        if (Tokenized_File_Iterator->second.getToken_Type() == "A" || Tokenized_File_Iterator->second.getToken_Type() == "B"
-            || Tokenized_File_Iterator->second.getToken_Type() == "C" || Tokenized_File_Iterator->second.getToken_Type() == "D")
+        if (Tokenized_File_Iterator->second.getToken_Type() == "A" || Tokenized_File_Iterator->second.getToken_Type() == "B" || Tokenized_File_Iterator->second.getToken_Type() == "C" || Tokenized_File_Iterator->second.getToken_Type() == "D")
         {
             continue;
         }
@@ -236,10 +231,10 @@ string TOKENIZER::getSource_File_Path()
 
 string TOKENIZER::getSource_File_Language()
 {
-    return  this->Source_File_Language;
+    return this->Source_File_Language;
 }
 
-TOKEN TOKENIZER::getTokenized_File_Vector(unsigned  int index)
+TOKEN TOKENIZER::getTokenized_File_Vector(unsigned int index)
 {
     if (index < Tokenized_File_Vector.size())
         return Tokenized_File_Vector[index];
@@ -247,34 +242,30 @@ TOKEN TOKENIZER::getTokenized_File_Vector(unsigned  int index)
         throw "Unauthorized Access";
 }
 
-vector <TOKEN> TOKENIZER::getTokenized_File_Vector()
+vector<TOKEN> TOKENIZER::getTokenized_File_Vector()
 {
     return Tokenized_File_Vector;
 }
 
 void TOKENIZER::getData()
 {
-    unsigned  int counter1 = 0;
-    cout << "  FILE NAME: " << getSource_File_Name() << endl <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+    unsigned int counter1 = 0;
+    cout << "  FILE NAME: " << getSource_File_Name() << endl
+         << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
     for (auto Tokenized_File_Iterator = Tokenized_File_Vector.begin(); Tokenized_File_Iterator != Tokenized_File_Vector.end(); Tokenized_File_Iterator++)
     {
 
         cout << "Start line no: " << Tokenized_File_Iterator->getToken_Start_Line_no() << "\n"
-            << "Token ID: " << Tokenized_File_Iterator->getToken_Type() << "\n"
-            << "End line no: " << Tokenized_File_Iterator->getToken_End_Line_no() << "\n"
-            << "Content: " << Tokenized_File_Iterator->getToken_Content()<< "\n"
-            <<"Token Index: " << counter1 << "\n"
-            << "-----------------------------------------------------------------------\n";
+             << "Token ID: " << Tokenized_File_Iterator->getToken_Type() << "\n"
+             << "End line no: " << Tokenized_File_Iterator->getToken_End_Line_no() << "\n"
+             << "Content: " << Tokenized_File_Iterator->getToken_Content() << "\n"
+             << "Token Index: " << counter1 << "\n"
+             << "-----------------------------------------------------------------------\n";
         counter1++;
-
     }
-    cout<<"Total Tokens: "<< counter1<<endl;
+    cout << "Total Tokens: " << counter1 << endl;
 }
 string TOKENIZER::getSource_File_Token()
 {
     return Source_File_Token;
 }
-
-
-
-
